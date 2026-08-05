@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teams;
 
 use App\Actions\Teams\CreateTeam;
+use App\Actions\Teams\EnrichTeamProfile;
 use App\Enums\TeamRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teams\DeleteTeamRequest;
@@ -40,7 +41,7 @@ class TeamController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Team created.')]);
 
-        return to_route('teams.edit', ['team' => $team->slug]);
+        return to_route('onboarding.edit', ['current_team' => $team->slug]);
     }
 
     /**
@@ -56,6 +57,9 @@ class TeamController extends Controller
                 'name' => $team->name,
                 'slug' => $team->slug,
                 'isPersonal' => $team->is_personal,
+                'website' => $team->website,
+                'description' => $team->description,
+                'enrichedData' => $team->enriched_data,
             ],
             'members' => $team->members()->get()->map(function (User $member) {
                 /** @var Membership $membership */
@@ -95,7 +99,8 @@ class TeamController extends Controller
         $team = DB::transaction(function () use ($request, $team) {
             $team = Team::whereKey($team->id)->lockForUpdate()->firstOrFail();
 
-            $team->update(['name' => $request->validated('name')]);
+            $validated = $request->validated();
+            $team->update(array_intersect_key($validated, array_flip(['name', 'website', 'description'])));
 
             return $team;
         });
@@ -170,5 +175,25 @@ class TeamController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Team deleted.')]);
 
         return to_route('teams.index');
+    }
+
+    /**
+     * Re-enrich the team profile with AI analysis.
+     */
+    public function reEnrich(Team $team, EnrichTeamProfile $enrichTeamProfile): RedirectResponse
+    {
+        Gate::authorize('update', $team);
+
+        if (! $team->website) {
+            Inertia::flash('toast', ['type' => 'warning', 'message' => __('Please add a website before re-enriching.')]);
+
+            return to_route('teams.edit', ['team' => $team->slug]);
+        }
+
+        $enrichTeamProfile->handle($team, $team->website, $team->description);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Team profile re-enriched.')]);
+
+        return to_route('teams.edit', ['team' => $team->slug]);
     }
 }

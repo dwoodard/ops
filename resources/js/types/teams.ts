@@ -5,6 +5,9 @@ export type Team = {
     name: string;
     slug: string;
     isPersonal: boolean;
+    website?: string | null;
+    description?: string | null;
+    enrichedData?: Record<string, any> | null;
     role?: TeamRole;
     roleLabel?: string;
     isCurrent?: boolean;

@@ -92,6 +92,12 @@ const confirmCancelInvitation = (invitation: TeamInvitation) => {
     invitationToCancel.value = invitation;
     cancelInvitationDialogOpen.value = true;
 };
+
+const reEnrich = () => {
+    router.post(`/settings/teams/${props.team.slug}/re-enrich`, {}, {
+        preserveScroll: true,
+    });
+};
 </script>
 
 <template>
@@ -125,6 +131,27 @@ const confirmCancelInvitation = (invitation: TeamInvitation) => {
                     <InputError :message="errors.name" />
                 </div>
 
+                <div class="grid gap-2">
+                    <Label for="website">Website</Label>
+                    <Input
+                        id="website"
+                        type="url"
+                        name="website"
+                        :default-value="team.website ?? ''"
+                    />
+                    <InputError :message="errors.website" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="description">Description</Label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >{{ team.description ?? '' }}</textarea>
+                    <InputError :message="errors.description" />
+                </div>
+
                 <div class="flex items-center gap-4">
                     <Button
                         type="submit"
@@ -135,6 +162,55 @@ const confirmCancelInvitation = (invitation: TeamInvitation) => {
                     </Button>
                 </div>
             </Form>
+
+            <div
+                v-if="team.enrichedData"
+                class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-200/20 dark:bg-blue-700/10 space-y-3"
+            >
+                <div class="flex items-center justify-between">
+                    <div class="space-y-1">
+                        <p class="text-sm font-medium text-blue-900 dark:text-blue-100">AI Insights</p>
+                        <p class="text-xs text-blue-700 dark:text-blue-200">
+                            Automatically analyzed from your website
+                        </p>
+                    </div>
+                    <Button
+                        v-if="permissions.canUpdateTeam"
+                        @click="reEnrich"
+                        variant="outline"
+                        size="sm"
+                        class="h-8"
+                    >
+                        Refresh
+                    </Button>
+                </div>
+                <div class="grid gap-3 text-sm">
+                    <div v-if="team.enrichedData.industry" class="space-y-1">
+                        <p class="font-medium text-blue-900 dark:text-blue-100">Industry</p>
+                        <p class="text-blue-700 dark:text-blue-200">
+                            {{ team.enrichedData.industry }}
+                        </p>
+                    </div>
+                    <div v-if="team.enrichedData.company_size" class="space-y-1">
+                        <p class="font-medium text-blue-900 dark:text-blue-100">Company Size</p>
+                        <p class="text-blue-700 dark:text-blue-200">
+                            {{ team.enrichedData.company_size }}
+                        </p>
+                    </div>
+                    <div v-if="team.enrichedData.summary" class="space-y-1">
+                        <p class="font-medium text-blue-900 dark:text-blue-100">Summary</p>
+                        <p class="text-blue-700 dark:text-blue-200">
+                            {{ team.enrichedData.summary }}
+                        </p>
+                    </div>
+                    <div v-if="team.enrichedData.target_market" class="space-y-1">
+                        <p class="font-medium text-blue-900 dark:text-blue-100">Target Market</p>
+                        <p class="text-blue-700 dark:text-blue-200">
+                            {{ team.enrichedData.target_market }}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div v-else class="space-y-6">
