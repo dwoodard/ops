@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Objective;
 use App\Models\User;
-use App\Models\Workspace;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,7 @@ class ObjectiveFactory extends Factory
             ?? User::factory()->create(['email' => 'user@user.com']);
 
         return [
-            'workspace_id' => Workspace::factory(),
+            'team_id' => Team::factory(),
             'owner_id' => $user->id,
             'name' => 'Land '.$this->faker->numberBetween(5, 20).' '.$this->faker->word().' Accounts',
             'goal' => $this->faker->sentence(12),

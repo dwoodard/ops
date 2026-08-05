@@ -19,35 +19,41 @@ Database schema and Eloquent model planning for the application.
 - updated_at (datetime)
 
 **Relationships:**
-- has_many: WorkspaceMember
-- has_many: Workspace (owned)
+- belongsToMany: Team (via Membership/team_members)
+- can_own: Team
 
-### Workspace (workspaces)
+### Team (teams)
+Uses Fortify's team system. See [Fortify Team Documentation](https://laravel.com/docs/fortify#teams).
 - id (PK)
-- owner_id (FK → User)
 - name (string)
+- slug (string, unique)
+- is_personal (boolean)
 - created_at (datetime)
 - updated_at (datetime)
+- deleted_at (datetime, nullable, soft delete)
 
 **Relationships:**
-- belongs_to: User (owner)
-- has_many: WorkspaceMember
-- has_many: Objective
+- belongsToMany: User (via Membership)
+- hasMany: TeamInvitation
+- hasMany: Objective
 
-### WorkspaceMember (workspace_members)
+### Membership (team_members)
+Represents a user's membership in a team with a role.
 - id (PK)
-- workspace_id (FK → Workspace, cascade delete)
+- team_id (FK → Team, cascade delete)
 - user_id (FK → User, cascade delete)
+- role (string: 'owner', 'admin', 'member')
 - created_at (datetime)
 - updated_at (datetime)
 
 **Relationships:**
-- belongs_to: Workspace
+- belongs_to: Team
 - belongs_to: User
 
 ### Objective (objectives)
+Scoped to a Team. The owner must be a member of the team.
 - id (PK)
-- workspace_id (FK → Workspace, cascade delete)
+- team_id (FK → Team, cascade delete)
 - owner_id (FK → User)
 - name (string)
 - goal (text)
@@ -63,7 +69,7 @@ Database schema and Eloquent model planning for the application.
 - updated_at (datetime)
 
 **Relationships:**
-- belongs_to: Workspace
+- belongs_to: Team
 - belongs_to: User (owner)
 - has_many: Signal
 - has_many: Opportunity

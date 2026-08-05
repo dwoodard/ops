@@ -44,15 +44,17 @@ class UserFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function ($user) {
-            $team = Team::factory()->personal()->create([
-                'name' => $user->name."'s Team",
-            ]);
+            if ($user->email !== 'user@user.com') {
+                $team = Team::factory()->personal()->create([
+                    'name' => $user->name."'s Team",
+                ]);
 
-            $team->members()->attach($user, [
-                'role' => TeamRole::Owner->value,
-            ]);
+                $team->members()->attach($user, [
+                    'role' => TeamRole::Owner->value,
+                ]);
 
-            $user->switchTeam($team);
+                $user->switchTeam($team);
+            }
         });
     }
 

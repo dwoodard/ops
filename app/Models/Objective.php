@@ -15,9 +15,9 @@ class Objective extends Model
 
     protected $casts = ['enriched_data' => 'json', 'end_date' => 'datetime'];
 
-    public function workspace()
+    public function team()
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Team::class);
     }
 
     public function owner()

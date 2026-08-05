@@ -1,15 +1,17 @@
-# Complete Workspace Example
+# Complete Team Example
 
-Full nested structure showing Workspace → Members → Objective → Signals → Opportunities → Activity Logs
+Full nested structure showing Team → Members → Objective → Signals → Opportunities → Activity Logs
 
 ```json
 {
-  "workspace": {
+  "team": {
     "id": 1,
-    "owner_id": 5,
     "name": "Emerald Bay Collective",
+    "slug": "emerald-bay-collective",
+    "is_personal": false,
     "created_at": "2026-08-01T10:00:00Z",
     "updated_at": "2026-08-05T14:22:00Z",
+    "deleted_at": null,
 
     "members": [
       {
@@ -17,23 +19,25 @@ Full nested structure showing Workspace → Members → Objective → Signals �
         "user_id": 6,
         "name": "Chance Nelson",
         "email": "chance@emeraldbay.com",
-        "role": "workspace_member",
-        "created_at": "2026-08-02T14:00:00Z"
+        "role": "member",
+        "created_at": "2026-08-02T14:00:00Z",
+        "updated_at": "2026-08-02T14:00:00Z"
       },
       {
         "id": 2,
         "user_id": 5,
         "name": "Dustin Woodard",
         "email": "dustin@emeraldbay.com",
-        "role": "workspace_owner",
-        "created_at": "2026-08-01T10:00:00Z"
+        "role": "owner",
+        "created_at": "2026-08-01T10:00:00Z",
+        "updated_at": "2026-08-01T10:00:00Z"
       }
     ],
 
     "objectives": [
       {
         "id": 1,
-        "workspace_id": 1,
+        "team_id": 1,
         "owner_id": 5,
         "name": "Land 10 Retail Accounts",
         "goal": "Find and secure 10 retail partners in the beauty space who need brand strategy work",
@@ -154,7 +158,7 @@ Full nested structure showing Workspace → Members → Objective → Signals �
             "source": "news_api",
             "company_name": "Whole Foods Market",
             "description": "Whole Foods launches expanded clean beauty product line",
-            "url": "https://news.wholewoodsmarket.com/clean-beauty-launch",
+            "url": "https://news.wholefoods.com/clean-beauty-launch",
             "detected_at": "2026-08-04T14:20:00Z",
             "relevance_score": 0.88,
             "metadata": {
@@ -172,7 +176,8 @@ Full nested structure showing Workspace → Members → Objective → Signals �
           {
             "id": 42,
             "objective_id": 1,
-            "company_name": "Whole Foods Market",
+            "name": "Whole Foods Market",
+            "entity_type": "company",
             "description": "High-fit opportunity: expanding beauty category with new VP, launching product line",
             "fit_score": 0.90,
             "signal_ids": [101, 102],
@@ -322,9 +327,11 @@ Full nested structure showing Workspace → Members → Objective → Signals �
 
 ## What This Shows
 
-**Workspace (top level)**
-- Owner and members
+**Team (top level)**
+- Members with roles (owner, admin, member)
 - Contains multiple objectives
+- Unique slug for routing
+- Soft deletes for archive
 
 **Objective (the goal)**
 - Name + goal from user
