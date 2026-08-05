@@ -161,7 +161,9 @@ public function hasUnresolvedActions(): bool {
 ### Opportunity (opportunities)
 - id (PK)
 - objective_id (FK → Objective, cascade delete)
-- company_name (string)
+- name (string) - Generic name for the target
+- entity_type (enum: company, person, partnership, event, website, community, other)
+- description (text, nullable) - Additional context about the opportunity
 - fit_score (float, 0-1) - average relevance of clustered signals
 - signal_ids (json array) - related signal IDs
 - overall_status (string: detected, contacted, in_progress, won, lost) - best result from signals

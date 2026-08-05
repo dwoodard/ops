@@ -22,6 +22,6 @@ class UserSeeder extends Seeder
         ]);
 
         // Additional test users
-        User::factory(5)->create();
+        // User::factory(5)->create();
     }
 }
