@@ -4,6 +4,8 @@ namespace App\Actions\Teams;
 
 use App\Ai\Agents\OnboardTeamAgent;
 use App\Models\Team;
+use Illuminate\Support\Facades\Log;
+use Laravel\Ai\Enums\Lab;
 
 class EnrichTeamProfile
 {
@@ -15,11 +17,21 @@ class EnrichTeamProfile
         $prompt = $this->buildPrompt($website, $description);
 
         try {
-            $response = (new OnboardTeamAgent)->prompt($prompt);
+            $response = (new OnboardTeamAgent)->prompt($prompt, provider: Lab::Groq);
 
             $enrichedData = is_array($response) ? $response : json_decode($response, true) ?? ['summary' => (string) $response];
             $aiDescription = $enrichedData['summary'] ?? null;
+
+            Log::info('Team profile enriched successfully', [
+                'team_id' => $team->id,
+                'fields' => count($enrichedData),
+            ]);
         } catch (\Throwable $e) {
+            Log::warning('Team profile enrichment failed, using fallback', [
+                'team_id' => $team->id,
+                'error' => $e->getMessage(),
+                'website' => $website,
+            ]);
             $enrichedData = ['summary' => (string) $description ?: 'Company information'];
             $aiDescription = null;
         }

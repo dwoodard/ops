@@ -164,7 +164,7 @@ const reEnrich = () => {
             </Form>
 
             <div
-                v-if="team.enrichedData"
+                v-if="team.website"
                 class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-200/20 dark:bg-blue-700/10 space-y-3"
             >
                 <div class="flex items-center justify-between">
@@ -184,7 +184,7 @@ const reEnrich = () => {
                         Refresh
                     </Button>
                 </div>
-                <div class="grid gap-3 text-sm">
+                <div v-if="team.enrichedData" class="grid gap-3 text-sm">
                     <div v-if="team.enrichedData.industry" class="space-y-1">
                         <p class="font-medium text-blue-900 dark:text-blue-100">Industry</p>
                         <p class="text-blue-700 dark:text-blue-200">
@@ -209,6 +209,9 @@ const reEnrich = () => {
                             {{ team.enrichedData.target_market }}
                         </p>
                     </div>
+                </div>
+                <div v-else class="text-sm text-blue-700 dark:text-blue-200">
+                    <p>Analyzing your website... Click Refresh to update.</p>
                 </div>
             </div>
         </div>

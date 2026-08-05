@@ -42,8 +42,17 @@ test('onboarding requires valid website URL', function () {
 });
 
 test('onboarding form submission saves team profile', function () {
-    // For now, just test that the profile data is saved
-    // AI enrichment will be tested separately with proper mocking
+    OnboardTeamAgent::fake([
+        [
+            'industry' => 'Test Industry',
+            'company_size' => 'Small (1-50)',
+            'summary' => 'A test company',
+            'target_market' => 'Test Market',
+            'website_title' => 'Example',
+            'website_description' => 'Test',
+        ],
+    ]);
+
     $user = User::factory()->create();
     $team = Team::factory()->create();
     $team->members()->attach($user, ['role' => 'owner']);

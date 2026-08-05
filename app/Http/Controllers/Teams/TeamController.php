@@ -190,9 +190,16 @@ class TeamController extends Controller
             return to_route('teams.edit', ['team' => $team->slug]);
         }
 
-        $enrichTeamProfile->handle($team, $team->website, $team->description);
-
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Team profile re-enriched.')]);
+        try {
+            $enrichTeamProfile->handle($team, $team->website, $team->description);
+            Inertia::flash('toast', ['type' => 'success', 'message' => __('Team profile re-enriched.')]);
+        } catch (\Throwable $e) {
+            \Log::error('Team profile re-enrichment failed', [
+                'team_id' => $team->id,
+                'error' => $e->getMessage(),
+            ]);
+            Inertia::flash('toast', ['type' => 'error', 'message' => __('Failed to re-enrich profile. Please try again.')]);
+        }
 
         return to_route('teams.edit', ['team' => $team->slug]);
     }
