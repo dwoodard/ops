@@ -16,6 +16,7 @@ class Signal extends Model
     protected $casts = [
         'metadata' => 'json',
         'actions_and_results' => 'json',
+        'enrichment' => 'json',
         'detected_at' => 'datetime',
     ];
 

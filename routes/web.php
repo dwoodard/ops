@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Objectives\ObjectiveController;
 use App\Http\Controllers\Teams\TeamInvitationController;
 use App\Http\Controllers\Teams\TeamOnboardingController;
 use App\Http\Middleware\EnsureTeamMembership;
@@ -14,6 +15,7 @@ Route::prefix('{current_team}')
         Route::get('dashboard', DashboardController::class)->name('dashboard');
         Route::get('onboarding', [TeamOnboardingController::class, 'edit'])->name('onboarding.edit');
         Route::post('onboarding', [TeamOnboardingController::class, 'update'])->name('onboarding.update');
+        Route::resource('objectives', ObjectiveController::class)->only(['index', 'create', 'store', 'show']);
     });
 
 Route::middleware(['auth'])->group(function () {

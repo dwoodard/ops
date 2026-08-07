@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OpportunityEngagementStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,7 @@ class Opportunity extends Model
         'fit_score' => 'float',
         'total_deal_value' => 'float',
         'entity_type' => 'string',
+        'engagement_status' => OpportunityEngagementStatus::class,
     ];
 
     public function objective()
@@ -24,6 +26,13 @@ class Opportunity extends Model
         return $this->belongsTo(Objective::class);
     }
 
+    // owner is the user who is responsible for this opportunity
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    // contacts are the people associated with this opportunity
     public function contacts()
     {
         return $this->hasMany(Contact::class);

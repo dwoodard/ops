@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->boolean('is_personal')->default(false);
+            $table->json('brand_voice')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

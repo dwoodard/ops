@@ -96,6 +96,16 @@ class Team extends Model
     }
 
     /**
+     * Get all objectives for this team.
+     *
+     * @return HasMany<Objective, $this>
+     */
+    public function objectives(): HasMany
+    {
+        return $this->hasMany(Objective::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

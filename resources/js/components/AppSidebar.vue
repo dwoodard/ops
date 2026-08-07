@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { BookOpen, FolderGit2, Target, LayoutDashboard } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -16,20 +16,31 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import dashboard from '@/routes/dashboard';
+import objectives from '@/routes/objectives';
+
 import type { NavItem } from '@/types';
 
 const page = usePage();
 
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    page.props.currentTeam ? dashboard.index({ current_team: page.props.currentTeam.slug }).url : '/',
+);
+
+const objectivesUrl = computed(() =>
+    page.props.currentTeam ? objectives.index({ current_team: page.props.currentTeam.slug }).url : '/',
 );
 
 const mainNavItems = computed<NavItem[]>(() => [
     {
         title: 'Dashboard',
         href: dashboardUrl.value,
-        icon: LayoutGrid,
+        icon: LayoutDashboard,
+    },
+    {
+        title: 'Objectives',
+        href: objectivesUrl.value,
+        icon: Target,
     },
 ]);
 

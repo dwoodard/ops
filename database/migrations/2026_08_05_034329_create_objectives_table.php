@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('goal');
             $table->json('enriched_data')->nullable();
+            $table->json('brand_voice')->nullable();
             $table->dateTime('end_date')->nullable();
+            $table->dateTime('next_search_run_at')->nullable();
             $table->string('status')->default('active');
             $table->timestamps();
         });

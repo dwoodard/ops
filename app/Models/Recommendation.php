@@ -15,11 +15,18 @@ class Recommendation extends Model
         'content' => 'json',
         'score_breakdown' => 'json',
         'confidence_score' => 'float',
+        'executed_at' => 'datetime',
+        'auto_generated' => 'boolean',
     ];
 
     public function opportunity()
     {
         return $this->belongsTo(Opportunity::class);
+    }
+
+    public function executedBy()
+    {
+        return $this->belongsTo(User::class, 'executed_by');
     }
 
     public function calculateConfidenceScore(): float

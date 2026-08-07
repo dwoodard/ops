@@ -13,7 +13,12 @@ class Objective extends Model
 
     protected $guarded = [];
 
-    protected $casts = ['enriched_data' => 'json', 'end_date' => 'datetime'];
+    protected $casts = [
+        'enriched_data' => 'json',
+        'brand_voice' => 'json',
+        'end_date' => 'datetime',
+        'next_search_run_at' => 'datetime',
+    ];
 
     public function team()
     {

@@ -61,7 +61,7 @@ Scoped to a Team. The owner must be a member of the team.
   - target_context (industries, company_size, geography, decision_makers)
   - services_positioned (array of services)
   - strategy (array of action items)
-  - search_teams (array of search configurations)
+  - search_terms (array of search configurations)
   - integrations_used (array: crm, linkedin, web, etc.)
 - end_date (datetime)
 - status (enum: active, paused, completed, overdue, cancelled)

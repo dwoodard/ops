@@ -61,7 +61,7 @@ Full nested structure showing Team → Members → Objective → Signals → Opp
             "Watch for companies at beauty/retail conferences",
             "Search for CEO/founder posts about expansion"
           ],
-          "search_teams": [
+          "search_terms": [
             {
               "id": "linkedin_search_1",
               "source": "linkedin",
@@ -336,8 +336,8 @@ Full nested structure showing Team → Members → Objective → Signals → Opp
 
 **Objective (the goal)**
 - Name + goal from user
-- enriched_data populated by AI (target_context, strategy, search_teams)
-- search_teams define what to search for and how
+- enriched_data populated by AI (target_context, strategy, search_terms)
+- search_terms define what to search for and how
 - end_date controls automation
 - status tracks lifecycle
 
