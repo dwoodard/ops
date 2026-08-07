@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { update } from '@/routes/onboarding';
-import { dashboard } from '@/routes';
+import dashboard from '@/routes/dashboard';
 import type { Team } from '@/types';
 
 type Props = {
@@ -75,7 +75,7 @@ defineOptions({
 
         <div class="text-center text-sm">
             <TextLink
-                :href="dashboard(team.slug)"
+                :href="dashboard.index({ current_team: team.slug }).url"
                 class="text-muted-foreground hover:text-foreground underline underline-offset-4"
             >
                 Skip for now

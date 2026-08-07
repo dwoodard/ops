@@ -2,7 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { CheckCircle2, Target, TrendingUp, Zap } from '@lucide/vue';
 import PendingInvitationsModal from '@/components/PendingInvitationsModal.vue';
-import { dashboard } from '@/routes';
+import dashboardRoute from '@/routes/dashboard';
 import objectivesRoute from '@/routes/objectives';
 import type { DashboardInvitation, Team } from '@/types';
 
@@ -39,12 +39,13 @@ const props = defineProps<{
 }>();
 
 defineOptions({
+    inheritAttrs: false,
     layout: (props: { currentTeam?: Team | null }) => ({
         breadcrumbs: [
             {
                 title: 'Dashboard',
                 href: props.currentTeam
-                    ? dashboard(props.currentTeam.slug)
+                    ? dashboardRoute.index({ current_team: props.currentTeam.slug }).url
                     : '/',
             },
         ],
