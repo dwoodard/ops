@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { CheckCircle2, Target, TrendingUp, Zap } from '@lucide/vue';
 import PendingInvitationsModal from '@/components/PendingInvitationsModal.vue';
+import TeamSetupAlert from '@/components/ops/TeamSetupAlert.vue';
 import dashboardRoute from '@/routes/dashboard';
 import objectivesRoute from '@/routes/objectives';
 import type { DashboardInvitation, Team } from '@/types';
@@ -73,6 +74,10 @@ const getStatusColor = (status: string): string => {
     />
 
     <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <TeamSetupAlert
+            v-if="currentTeam && !currentTeam.setupComplete"
+            :team="currentTeam"
+        />
         <!-- Stats Cards -->
         <div class="grid gap-4 md:grid-cols-3">
             <div class="rounded-lg border border-sidebar-border bg-card p-4 dark:border-sidebar-border dark:bg-card">

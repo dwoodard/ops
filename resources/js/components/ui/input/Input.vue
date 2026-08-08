@@ -3,11 +3,14 @@ import type { HTMLAttributes } from "vue"
 import { useVModel } from "@vueuse/core"
 import { cn } from "@/lib/utils"
 
-const props = defineProps<{
+interface Props extends HTMLAttributes {
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes["class"]
-}>()
+  value?: string | number
+}
+
+const props = withDefaults(defineProps<Props>(), {})
 
 const emits = defineEmits<{
   (e: "update:modelValue", payload: string | number): void
@@ -15,12 +18,13 @@ const emits = defineEmits<{
 
 const modelValue = useVModel(props, "modelValue", emits, {
   passive: true,
-  defaultValue: props.defaultValue,
+  defaultValue: props.value ?? props.defaultValue,
 })
 </script>
 
 <template>
   <input
+    v-bind="$attrs"
     v-model="modelValue"
     data-slot="input"
     :class="cn(

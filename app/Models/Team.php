@@ -26,7 +26,17 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Membership> $memberships
  * @property-read Collection<int, User> $members
  */
-#[Fillable(['name', 'slug', 'is_personal', 'website', 'description', 'enriched_data', 'onboarded_at'])]
+#[Fillable([
+    'name',
+    'slug',
+    'is_personal',
+    'website',
+    'description',
+    'enriched_data',
+    'pending_enriched_data',
+    'enrichment_status',
+    'onboarded_at',
+])]
 class Team extends Model
 {
     /** @use HasFactory<TeamFactory> */
@@ -115,6 +125,7 @@ class Team extends Model
         return [
             'is_personal' => 'boolean',
             'enriched_data' => 'json',
+            'pending_enriched_data' => 'json',
             'onboarded_at' => 'datetime',
         ];
     }

@@ -36,7 +36,7 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
+import dashboard from '@/routes/dashboard';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -52,7 +52,7 @@ const auth = computed(() => page.props.auth);
 const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
 
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    page.props.currentTeam ? dashboard.index(page.props.currentTeam.slug).url : '/',
 );
 
 const activeItemStyles =
@@ -277,7 +277,7 @@ const rightNavItems: NavItem[] = [
         </div>
 
         <div
-            v-if="props.breadcrumbs.length > 1"
+            v-if="props.breadcrumbs.length >= 1"
             class="flex w-full border-b border-sidebar-border/70"
         >
             <div

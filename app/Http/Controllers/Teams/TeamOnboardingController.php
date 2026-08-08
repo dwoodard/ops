@@ -36,15 +36,28 @@ class TeamOnboardingController extends Controller
     public function update(OnboardTeamRequest $request, EnrichTeamProfile $enrichTeamProfile): RedirectResponse
     {
         $team = $request->user()->currentTeam;
+        $website = $request->validated('website');
 
         $enrichTeamProfile->handle(
             $team,
-            $request->validated('website'),
+            $website,
             $request->validated('description'),
         );
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Team setup complete!']);
 
-        return to_route('dashboard', ['current_team' => $team->slug]);
+        return to_route('dashboard.index', ['current_team' => $team->slug]);
+    }
+
+    /**
+     * Normalize website URL by adding https:// if missing.
+     */
+    private function normalizeWebsite(string $website): string
+    {
+        if (! preg_match('~^https?://~i', $website)) {
+            return 'https://'.$website;
+        }
+
+        return $website;
     }
 }

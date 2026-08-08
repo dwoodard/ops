@@ -35,8 +35,6 @@ When user completes Phase 1, they'll have created an **Objective** record with:
   "owner_id": 5,
   "name": "Land 10 Retail Accounts",
   "goal": "Find and secure 10 retail partners in beauty who need brand strategy",
-  "goal_target": 10,
-  "goal_type": "new_accounts",
   "enriched_data": {
     "target_context": {
       "industries": ["Natural & Clean Beauty", "Specialty Retail"],
@@ -121,7 +119,7 @@ User sees AI-generated content and can:
 ### Step 4: Objective Ready
 System:
 - Sets `status = 'active'`
-- Sets `next_search_run_at = now()`
+- Sets `next_search_run_at = (datetime)`
 - Returns to dashboard
 
 **Next:** Phase 2 starts autonomous loop with this objective

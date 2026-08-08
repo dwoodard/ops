@@ -1,6 +1,6 @@
 <?php
 
-use App\Ai\Agents\OnboardTeamAgent;
+use App\Ai\Agents\TeamAgent;
 use App\Models\Team;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -41,8 +41,26 @@ test('onboarding requires valid website URL', function () {
     $response->assertSessionHasErrors('website');
 });
 
+test('onboarding accepts website URLs without protocol', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create();
+    $team->members()->attach($user, ['role' => 'owner']);
+    $user->switchTeam($team);
+
+    $response = $this
+        ->actingAs($user)
+        ->post(route('onboarding.update', ['current_team' => $team->slug]), [
+            'website' => 'example.com',
+            'description' => 'A test company',
+        ]);
+
+    $response->assertSessionMissing('errors');
+    $team->refresh();
+    expect($team->website)->toBe('https://example.com');
+});
+
 test('onboarding form submission saves team profile', function () {
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'Test Industry',
             'company_size' => 'Small (1-50)',
@@ -65,7 +83,7 @@ test('onboarding form submission saves team profile', function () {
             'description' => 'A test company',
         ]);
 
-    $response->assertRedirect(route('dashboard', ['current_team' => $team->slug]));
+    $response->assertRedirect(route('dashboard.index', ['current_team' => $team->slug]));
 
     $team->refresh();
     expect($team->website)->toBe('https://example.com');
@@ -96,7 +114,7 @@ test('team members cannot access onboarding', function () {
 
 test('onboarding enriches profile with AI data', function () {
     // Mock the TeamProfileAgent to return structured data
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'SaaS',
             'company_size' => 'Small (1-50)',
@@ -128,7 +146,7 @@ test('onboarding enriches profile with AI data', function () {
 });
 
 test('onboarding gracefully handles AI enrichment failures', function () {
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'Test',
             'company_size' => 'Small (1-50)',
@@ -151,7 +169,7 @@ test('onboarding gracefully handles AI enrichment failures', function () {
             'description' => 'A test company',
         ]);
 
-    $response->assertRedirect(route('dashboard', ['current_team' => $team->slug]));
+    $response->assertRedirect(route('dashboard.index', ['current_team' => $team->slug]));
 
     $team->refresh();
     // Profile should be saved with data
@@ -161,7 +179,7 @@ test('onboarding gracefully handles AI enrichment failures', function () {
 });
 
 test('ai enrichment includes website metadata when available', function () {
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'SaaS',
             'company_size' => 'Small (1-50)',
@@ -191,7 +209,7 @@ test('ai enrichment includes website metadata when available', function () {
 });
 
 test('team owner can re-enrich profile from settings', function () {
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'Updated Industry',
             'company_size' => 'Medium (50-500)',
@@ -220,7 +238,7 @@ test('team owner can re-enrich profile from settings', function () {
 });
 
 test('onboarding agent extracts complete website data', function () {
-    OnboardTeamAgent::fake([
+    TeamAgent::fake([
         [
             'industry' => 'SaaS',
             'company_size' => 'Small (1-50)',

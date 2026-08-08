@@ -60,7 +60,13 @@ class DashboardController extends Controller
             'completedObjectives' => Objective::where('team_id', $team->id)->where('status', 'completed')->count(),
         ];
 
+        $teamSetupComplete = ! empty($team->website) && ! empty($team->description);
+
         return Inertia::render('Dashboard', [
+            'currentTeam' => [
+                ...$team->only(['id', 'name', 'slug', 'website', 'description']),
+                'setupComplete' => $teamSetupComplete,
+            ],
             'pendingInvitations' => $pendingInvitations,
             'objectives' => $objectives,
             'stats' => $stats,

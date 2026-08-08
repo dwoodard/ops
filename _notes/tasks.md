@@ -47,7 +47,7 @@
 ## ⏳ TODO (Part A Build — Next)
 
 Build order per approved plan:
-- [ ] `app/OpsEngine/Agents/EnrichObjectiveAgent.php` (mirrors OnboardTeamAgent)
+- [ ] `app/OpsEngine/Agents/EnrichObjectiveAgent.php` (mirrors TeamAgent)
 - [ ] `app/OpsEngine/Actions/EnrichObjective.php` (mirrors EnrichTeamProfile)
 - [ ] `app/Http/Controllers/Objectives/ObjectiveController.php` (create, store, show, edit/update)
 - [ ] `resources/js/pages/objectives/Create.vue` (form)

@@ -7,7 +7,7 @@ use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
 
-class OnboardTeamAgent implements Agent, HasStructuredOutput
+class TeamAgent implements Agent, HasStructuredOutput
 {
     use Promptable;
 
@@ -23,6 +23,7 @@ You are a research assistant specializing in company analysis. Your task is to a
    - industry: The primary industry or sector
    - company_size: Estimated company size (e.g., "Startup", "Small (1-50)", "Medium (50-500)", "Enterprise (500+)")
    - summary: A brief 1-2 sentence summary of what the company does
+   - description: A complete 2-3 sentence company description covering what they do, who they serve, and their value proposition
    - target_market: The primary target market or customer segment
    - website_title: The website's likely title or main heading based on domain and context
    - website_description: The website's likely main value proposition or tagline
@@ -41,6 +42,7 @@ Prompt;
             'industry' => $schema->string('The primary industry or sector')->required(),
             'company_size' => $schema->string('Estimated company size')->required(),
             'summary' => $schema->string('Brief summary of the company')->required(),
+            'description' => $schema->string('Complete company description for use as team description')->required(),
             'target_market' => $schema->string('Primary target market or customer segment')->required(),
             'website_title' => $schema->string('Website title or main heading')->required(),
             'website_description' => $schema->string('Website meta description or tagline')->required(),

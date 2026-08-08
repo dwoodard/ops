@@ -25,63 +25,7 @@ User Reviews & Executes
   ↓
 Track Results → Loop
 ```
-
-  
-
----
-
-
-### New/Updated Tables
-
-**objectives** — add fields:
-```php
-- goal_target: int                    // "10 accounts"
-- goal_type: enum                     // "new_accounts", "pipeline_value", "meetings"
-- brand_voice: json                   // moved from enriched_data for easy access
-- next_search_run_at: datetime (nullable)
-```
-
-**signals** — add fields:
-```php
-- deduplication_hash: string (unique, nullable)  // hash(source, company_name, signal_type, date_window)
-- enrichment: json (nullable)                    // AI analysis of the signal
-```
-
-**opportunities** — add fields:
-```php
-- company_id: int (nullable)          // link to real company if you have CRM
-- owner_id: int (nullable)            // team member leading this
-- engagement_status: enum             // "new", "contacted", "replied", "meeting_scheduled", "won", "lost"
-```
-
-**recommendations** — add fields:
-```php
-- executed_at: datetime (nullable)
-- executed_by: int (nullable)
-- result_comment: text (nullable)
-- auto_generated: boolean             // was this AI-generated or manual?
-```
-
-**New table: integrations**
-```php
-- id (PK)
-- team_id (FK)
-- provider: string                    // "linkedin", "news_api", "serper_api", "sendgrid", etc.
-- is_enabled: boolean
-- last_used_at: datetime (nullable)
-- last_error_at: datetime (nullable)
-- error_message: text (nullable)
-- created_at, updated_at
-```
-
-**New table: integration_credentials** (encrypted)
-```php
-- id (PK)
-- integration_id (FK)
-- key_name: string                    // "api_key", "access_token"
-- encrypted_value: text               // use Laravel's encryption
-- created_at, updated_at
-```
+ 
 
 ---
 

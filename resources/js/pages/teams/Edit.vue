@@ -125,7 +125,7 @@ const reEnrich = () => {
                         id="name"
                         name="name"
                         data-test="team-name-input"
-                        :default-value="team.name"
+                        :value="team.name"
                         required
                     />
                     <InputError :message="errors.name" />
@@ -137,7 +137,7 @@ const reEnrich = () => {
                         id="website"
                         type="url"
                         name="website"
-                        :default-value="team.website ?? ''"
+                        :value="team.website ?? ''"
                     />
                     <InputError :message="errors.website" />
                 </div>
