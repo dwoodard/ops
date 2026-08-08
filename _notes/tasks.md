@@ -11,7 +11,7 @@
 2. [x] Scaffold files via artisan (ObjectiveController, StoreObjectiveRequest)
    - `app/Http/Controllers/Objectives/ObjectiveController.php`
    - `app/Http/Requests/StoreObjectiveRequest.php`
-3. [ ] Add routes to routes/web.php (under team prefix)
+3. [x] Add routes to routes/web.php (under team prefix)
 4. [ ] Build Create.vue form (goal, goal_target, goal_type, end_date)
 5. [ ] Wire controller (create, store actions)
 6. [ ] Build Show.vue (display saved Objective)
